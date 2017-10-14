@@ -114,6 +114,15 @@
                 brushWidth --;
             }
         });
+        canvas.addEventListener("touchmove",(e)=>{
+            if(e.offsetY >50){
+                ctx.fillStyle = drawStyle;
+                ctx.beginPath();
+                ctx.arc(e.offsetX,e.offsetY,brushWidth,0,2*Math.PI);
+                ctx.fill();
+                ctx.closePath();
+            }
+        });
     </script>
 </body>
 </html>
