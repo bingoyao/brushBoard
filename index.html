@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        canvas{
+            display: block;
+            margin: 0 auto;
+            cursor: url('./icon/drawing.png'),auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let flagDraw = false;
+        let brushRed = new Image();
+        let brushOrange = new Image();
+        let brushBlack = new Image();
+        let brushGreen = new Image();
+        let eraser = new Image();
+        let drawStyle = "#000"; 
+        let brushWidth = 5; 
+        brushBlack.src = "./icon/brush_black.png";
+        brushRed.src = "./icon/brush_red.png";
+        brushOrange.src = "./icon/brush_orange.png";
+        brushGreen.src = "./icon/brush_green.png";
+        eraser.src = "./icon/eraser.png";
+
+        brushBlack.onload = function(){
+            ctx.drawImage(brushBlack,5,5,40,40);
+        }
+        brushRed.onload = function(){
+            ctx.drawImage(brushRed,55,5,40,40);
+        }
+        brushOrange.onload = function(){
+            ctx.drawImage(brushOrange,105,5,40,40);
+        }
+        
+        brushGreen.onload = function(){
+            ctx.drawImage(brushGreen,155,5,40,40);
+        }
+        eraser.onload = function(){
+            ctx.drawImage(eraser,205,5,40,40);
+        }
+        ctx.font = "normal 20px Verdana";
+        ctx.fillStyle = "#000000";
+        ctx.fillText("CLEAR",255,40,100);
+        ctx.fillText("SAVE",355,40,100);
+        ctx.beginPath();
+        ctx.strokeStyle = "#ccc";
+        ctx.strokeRect(0,0,800,45);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.strokeStyle = "#ccc";
+        ctx.strokeRect(0,50,800,550);
+        ctx.closePath();
+        ctx.stroke();
+
+        canvas.addEventListener('mousedown',(e)=>{
+            flagDraw = true;
+
+        });
+        canvas.addEventListener('mousemove',(e)=>{
+            if(flagDraw && e.offsetY >50){
+                ctx.fillStyle = drawStyle;
+                ctx.beginPath();
+                ctx.arc(e.offsetX,e.offsetY,brushWidth,0,2*Math.PI);
+                ctx.fill();
+                ctx.closePath();
+            }
+        });
+        
+        canvas.addEventListener('mouseup',()=>{
+            flagDraw = false;
+        });
+        canvas.addEventListener('click',(e)=>{
+            if(e.offsetY < 50){
+                let nth = Math.floor(e.offsetX / 50);
+                //console.log(nth);
+                switch(nth){
+                    case 0: drawStyle = "#000000";break;
+                    case 1: drawStyle = "#ff1e00";break;
+                    case 2: drawStyle = "#f9a31a";break;
+                    case 3: drawStyle = "#86c440";break;
+                    case 4: drawStyle = "#ffffff";break;
+                    case 5: ;
+                    case 6: ctx.clearRect(0,50,800,550);ctx.strokeRect(0,50,800,550);break;
+                    case 7: 
+                        let imgdata = ctx.getImageData(0,50,800,550);
+                        let can = document.createElement("canvas");
+                        let canCxt = can.getContext("2d");
+                        can.width = "800px";
+                        can.height = "550px";
+                        canCtx.putImageData(imgdata,0,0);
+                        document.body.appendChild(can);
+                        break;
+                    default:console.log("新功能还没实现哦");
+                }
+            }          
+        });
+        document.body.addEventListener('mousewheel',(e)=>{
+            //console.log(e);
+            if(e.wheelDelta == 120 && brushWidth <20){
+                //往上滚
+                brushWidth ++;
+            }else if(e.wheelDelta == -120 && brushWidth > 2){
+                brushWidth --;
+            }
+        });
+    </script>
+</body>
+</html>
