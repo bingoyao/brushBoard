@@ -117,10 +117,12 @@
         canvas.addEventListener("touchmove",(e)=>{
             e = e||window.event;
             e.preventDefault();
-            if(e.offsetY >50){
+            //console.log(e.touches[0].clientY);
+
+            if(e.touches[0].clientY >50){
                 ctx.fillStyle = drawStyle;
                 ctx.beginPath();
-                ctx.arc(e.offsetX,e.offsetY,brushWidth,0,2*Math.PI);
+                ctx.arc(e.touches[0].clientX,e.touches[0].clientY,brushWidth,0,2*Math.PI);
                 ctx.fill();
                 ctx.closePath();
             }
