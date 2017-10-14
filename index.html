@@ -115,6 +115,8 @@
             }
         });
         canvas.addEventListener("touchmove",(e)=>{
+            e = e||window.event;
+            e.preventDefault();
             if(e.offsetY >50){
                 ctx.fillStyle = drawStyle;
                 ctx.beginPath();
